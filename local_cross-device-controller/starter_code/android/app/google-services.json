@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "834729546603",
+    "project_id": "axyojp-test-firebase-x-device",
+    "storage_bucket": "axyojp-test-firebase-x-device.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:834729546603:android:80a6ccad12b6eb80ba322e",
+        "android_client_info": {
+          "package_name": "com.example.cross_device_remote_controller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "834729546603-eoqmefram414h1br9g8l0b4669grbq43.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKY3bSYddml71BRhmjciyOINV6GRTIAW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "834729546603-eoqmefram414h1br9g8l0b4669grbq43.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

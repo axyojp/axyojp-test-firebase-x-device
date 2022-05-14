@@ -1,0 +1,3 @@
+[submodule "cross-device-controller"]
+	path = cross-device-controller
+	url = https://github.com/FirebaseExtended/cross-device-controller.git
