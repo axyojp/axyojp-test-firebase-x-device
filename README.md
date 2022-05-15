@@ -70,7 +70,13 @@ flutter pub add provider
 
 
 # OBJECTIVE: Create a sign in flow
+# コード修正
 
 
+
+# 5. Add database connection
+flutter pub add firebase_app_installations
+flutter pub add firebase_database
+# コード修正
 
 ```

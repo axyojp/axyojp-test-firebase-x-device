@@ -54,6 +54,7 @@ class DefaultFirebaseOptions {
     authDomain: 'axyojp-test-firebase-x-device.firebaseapp.com',
     storageBucket: 'axyojp-test-firebase-x-device.appspot.com',
     measurementId: 'G-JYS12T49YE',
+    databaseURL: 'https://axyojp-test-firebase-x-device-default-rtdb.firebaseio.com/',
   );
 
   static const FirebaseOptions android = FirebaseOptions(

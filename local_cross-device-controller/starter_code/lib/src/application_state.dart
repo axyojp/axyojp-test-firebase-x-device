@@ -5,7 +5,15 @@ import 'package:flutter/material.dart';
 import '../firebase_options.dart';
 import 'authentication.dart';
 
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_app_installations/firebase_app_installations.dart'; 
+
 class ApplicationState extends ChangeNotifier {
+  String? _deviceId;
+  String? _uid;
+
   ApplicationState() {
     init();
   }
@@ -17,7 +25,10 @@ class ApplicationState extends ChangeNotifier {
 
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
+        // _loginState = ApplicationLoginState.loggedIn;
         _loginState = ApplicationLoginState.loggedIn;
+        _uid = user.uid;
+        _addUserDevice();
       } else {
         _loginState = ApplicationLoginState.loggedOut;
       }
@@ -92,4 +103,62 @@ class ApplicationState extends ChangeNotifier {
   void signOut() {
     FirebaseAuth.instance.signOut();
   }
+
+  Future<void> _addUserDevice() async {
+    _uid = FirebaseAuth.instance.currentUser?.uid;
+
+    String deviceType = _getDevicePlatform();
+    // Create two objects which we will write to the
+    // Realtime database when this device is offline or online
+    var isOfflineForDatabase = {
+      'type': deviceType,
+      'state': 'offline',
+      'last_changed': ServerValue.timestamp,
+    };
+    var isOnlineForDatabase = {
+      'type': deviceType,
+      'state': 'online',
+      'last_changed': ServerValue.timestamp,
+    };
+
+    var devicesRef =
+        FirebaseDatabase.instance.ref().child('/users/$_uid/devices');
+
+    FirebaseInstallations.instance
+        .getId()
+        .then((id) => _deviceId = id)
+        .then((_) {
+      // Use the semi-persistent Firebase Installation Id to key devices
+      var deviceStatusRef = devicesRef.child('$_deviceId');
+
+      // RTDB Presence API
+      FirebaseDatabase.instance
+          .ref()
+          .child('.info/connected')
+          .onValue
+          .listen((data) {
+        if (data.snapshot.value == false) {
+          return;
+        }
+
+        deviceStatusRef.onDisconnect().set(isOfflineForDatabase).then((_) {
+          deviceStatusRef.set(isOnlineForDatabase);
+        });
+      });
+    });
+  }
+
+  String _getDevicePlatform() {
+    if (kIsWeb) {
+      return 'Web';
+    } else if (Platform.isIOS) {
+      return 'iOS';
+    } else if (Platform.isAndroid) {
+      return 'Android';
+    }
+    return 'Unknown';
+  }
+
+
 }
+
